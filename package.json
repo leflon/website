@@ -1,0 +1,21 @@
+{
+  "name": "express-single-page-app",
+  "version": "1.0.0",
+  "description": "A simple Express app serving a single page with a unique token API.",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "bun src/app.ts"
+  },
+  "dependencies": {
+    "@mistralai/mistralai": "^1.6.0",
+    "dotenv": "^16.5.0",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.15.14"
+  }
+}
