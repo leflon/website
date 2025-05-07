@@ -35,7 +35,6 @@ async function sendMessage() {
         appContainer.classList.add('active');
         isFirstMessage = false;
     }
-    return;
     const assistantMessage = document.createElement('div');
     assistantMessage.className = 'message assistant';
     chatContainer.appendChild(assistantMessage);

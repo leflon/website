@@ -17,7 +17,9 @@
 <body>
 	<div class='app'>
 		<div class='landing'>
-			<h1>Bonjour, je suis Paul Leflon.</h1>
+			<img src='assets/img/paul@2x.webp'
+				alt='Red-haired man in his twenties wearing a black hoodie on a white background' width='200' />
+			<h1>Bonjour ! Je suis Paul Leflon.</h1>
 			<h2>Étudiant à l'école d'ingénieur Efrei Paris</h2>
 			<div class='landing-cta'>
 				<button class='example-prompt'>Présente-toi</button>
@@ -27,16 +29,24 @@
 		</div>
 		<div class='chat-container'>
 		</div>
-		<div class='input-container'>
-			<textarea placeholder='Poser une question...'></textarea>
-			<button type='submit'>
-				<!--<img src='assets/img/send.webp'
+		<div class='outer-input-container'>
+			<div class='input-container'>
+				<textarea placeholder='Poser une question...'></textarea>
+				<button type='submit'>
+					<!--<img src='assets/img/send.webp'
 					srcset='assets/img/send.webp 1x, assets/img/send@2x.webp 2x, assets/img/send@3x.webp 3x'
 					alt='send' />
 					See: https://github.com/oven-sh/bun/issues/19529
 					-->
-				<img src='assets/img/send@2x.webp' alt='send' width='24' height='24' />
-			</button>
+					<img src='assets/img/send@2x.webp' alt='send' width='24' height='24' />
+				</button>
+			</div>
+			<div class='disclaimer'>
+				<div>L'IA peut parfois se tromper. Les réponses sont générées automatiquement et peuvent contenir des
+					erreurs ou
+					des approximations.</div>
+				<div>Les conversations sont enregistrées et sont complètement anonymes.</div>
+			</div>
 		</div>
 	</div>
 </body>
