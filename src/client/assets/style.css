@@ -76,6 +76,7 @@ body {
 .message {
     color: white;
     margin: 16px 0;
+    white-space: pre-wrap;
 
     &.user {
         background: #38434c;

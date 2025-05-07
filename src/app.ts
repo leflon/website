@@ -51,7 +51,6 @@ serve({
                         const content = chunk.data.choices[0].delta.content as string;
                         if (content) {
                             messsage += content;
-                            process.stdout.write(content);
                             yield `${content}`;
                         }
                     }

@@ -5,20 +5,37 @@ const input = document.querySelector('.input-container textarea') as HTMLTextAre
 const send = document.querySelector('.input-container button') as HTMLButtonElement;
 const appContainer = document.querySelector('.app') as HTMLDivElement;
 const chatContainer = document.querySelector('.chat-container') as HTMLDivElement;
+const examplePrompts = document.querySelectorAll('.example-prompt') as NodeListOf<HTMLDivElement>;
+input.focus();
+
+examplePrompts.forEach(e => {
+    e.addEventListener('click', () => {
+        const prompt = e.textContent!;
+        input.value = prompt;
+        sendMessage();
+    });
+});
 
 let isFirstMessage = true;
+let isSendingDisabled = false;
 
-send.addEventListener('click', async () => {
+async function sendMessage() {
     const message = input.value.trim();
-    if (!message) return;
+    if (!message || isSendingDisabled) return;
+    input.value = '';
+    isSendingDisabled = true;
+    input.disabled = true;
+
     const userMessage = document.createElement('div');
     userMessage.className = 'message user';
     userMessage.textContent = message;
     chatContainer.appendChild(userMessage);
+    // Removes example prompts and moves input container down
     if (isFirstMessage) {
         appContainer.classList.add('active');
         isFirstMessage = false;
     }
+    return;
     const assistantMessage = document.createElement('div');
     assistantMessage.className = 'message assistant';
     chatContainer.appendChild(assistantMessage);
@@ -43,6 +60,16 @@ send.addEventListener('click', async () => {
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
         done = streamDone;
+    }
+    input.disabled = false;
+    isSendingDisabled = false;
+    input.focus();
+}
+send.addEventListener('click', sendMessage);
+input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
     }
 });
 
