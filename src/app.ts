@@ -1,88 +1,70 @@
-import express from 'express';
-import path from 'path';
-import crypto from 'crypto';
-import bodyParser from 'body-parser';
-import { readFileSync } from 'fs';
-import { Conversation } from './types/Conversation';
 import { Mistral } from '@mistralai/mistralai';
+import { serve } from 'bun';
+import crypto from 'crypto';
 import dotenv from 'dotenv';
-import { Message } from './types/Message';
+import Homepage from './client/index.html';
+import { appendMessage, getConversation, startConversation } from './db';
 
 dotenv.config();
 
-const app = express();
+
 const mistral = new Mistral({
     apiKey: process.env.MISTRAL_API_KEY,
 });
 
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, '../views'));
+const PORT = process.env.PORT || 3000;
+serve({
+    port: PORT,
+    development: true,
+    routes: {
+        '/': Homepage,
+        '/token': async (req) => {
+            const token = crypto.randomUUID();
+            startConversation(token);
+            return new Response(token);
+        },
+        '/message': {
+            POST: async (req) => {
+                console.log('Received message');
+                const { message, token } = await req.json();
+                if (!token) return new Response('No token provided', { status: 400 });
+                if (!message) return new Response('No message provided', { status: 400 });
 
-app.use(express.static(path.join(__dirname, '../public')));
+                const convo = getConversation(token);
+                if (!convo) return new Response('Conversation not found', { status: 404 });
+                if (Date.now() - convo.lastMessageAt > 10 * 60 * 1000) return new Response('Conversation expired', { status: 410 });
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
-const SYSTEM_PROMPT = readFileSync(path.join(__dirname, 'system.md'), 'utf-8');
-
-const conversations: Record<string, Conversation> = {};
-
-app.get('/', (req, res) => {
-    const token = crypto.randomUUID();
-    conversations[token] = {
-        id: token,
-        createdAt: new Date(),
-        lastMessageAt: new Date(),
-        messages: [
-            {
-                content: SYSTEM_PROMPT,
-                role: 'system',
-            },
-        ],
-    };
-    console.log('Conversation started:', token);
-    res.render('index', { token });
-});
-
-app.post('/api/message', async (req, res) => {
-    const { token, message } = req.body;
-    if (!token || !message)
-        return void res.status(400).json({ error: 'Token and message are required' });
-    if (!conversations[token])
-        return void res.status(404).json({ error: 'Conversation not found' });
-    const conversation = conversations[token];
-    conversation.messages.push({
-        content: message,
-        role: 'user'
-    });
-    conversation.lastMessageAt = new Date();
-    const completion = await mistral.chat.stream({
-        messages: conversation.messages,
-        model: 'mistral-large-latest',
-    });
-    res.writeHead(200, {
-        'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache',
-        'Connection': 'keep-alive',
-    });
-    console.log('Streaming a response for conversation', token);
-    const reply: Message = {
-        content: '',
-        role: 'assistant',
-    }
-    for await (const chunk of completion) {
-        if (chunk.data.choices[0].delta.content) {
-            const text = chunk.data.choices[0].delta.content as string;
-            reply.content += text;
-            res.write(text);
+                appendMessage(token, message, 'user');
+                const messages = convo.messages.map((msg) => ({
+                    role: msg.role,
+                    content: msg.content,
+                }));
+                console.log(`[${token}] Completion requested`);
+                const completion = await mistral.chat.stream({
+                    messages,
+                    stream: true,
+                    model: 'mistral-large-latest',
+                });
+                return new Response(async function*() {
+                    let messsage = '';
+                    for await (const chunk of completion) {
+                        const content = chunk.data.choices[0].delta.content as string;
+                        if (content) {
+                            messsage += content;
+                            process.stdout.write(content);
+                            yield `${content}`;
+                        }
+                    }
+                    console.log(`[${token}] Completion finished`);
+                    appendMessage(token, messsage, 'assistant');
+                }, {
+                    headers: {
+                        'Content-Type': 'text/event-stream',
+                        'Cache-Control': 'no-cache',
+                        'Connection': 'keep-alive',
+                    }
+                });
+            }
         }
     }
-    res.end();
-    conversation.messages.push(reply);
-    conversation.lastMessageAt = new Date();
-});
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Listening on :${PORT}`);
 });
