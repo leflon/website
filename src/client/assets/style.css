@@ -1,5 +1,5 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #1c1d25;
@@ -21,6 +21,7 @@ body {
 
 .landing {
     text-align: center;
+    font-family: 'Cal Sans';
 
     & h1 {
         color: #ffffff;
