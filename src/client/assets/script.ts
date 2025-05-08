@@ -59,11 +59,12 @@ async function sendMessage() {
         const { value, done: streamDone } = await reader.read();
         if (value) {
             assistantMessage.textContent += decoder.decode(value, { stream: true });
-            chatContainer.scrollTop = chatContainer.scrollHeight;
+            document.scrollingElement!.scrollTop = document.scrollingElement!.scrollHeight;
         }
         done = streamDone;
     }
     assistantMessage.innerHTML = converter.makeHtml(assistantMessage.textContent);
+    document.scrollingElement!.scrollTop = document.scrollingElement!.scrollHeight;
     input.disabled = false;
     isSendingDisabled = false;
     input.focus();
