@@ -8,6 +8,7 @@ db.exec('PRAGMA journal_mode = WAL;');
 const startQuery = db.prepare('INSERT INTO Conversations VALUES (?, ?, ?)');
 export function startConversation(token: string): void {
 	const now = Date.now();
+	console.log(`[${token}] Conversation started`);
 	startQuery.run(token, now, now);
 }
 

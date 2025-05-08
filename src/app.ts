@@ -20,7 +20,6 @@ serve({
         '/': Homepage,
         '/token': async (req) => {
             const token = crypto.randomUUID();
-            startConversation(token);
             return new Response(token);
         },
         '/message': {
@@ -30,8 +29,11 @@ serve({
                 if (!token) return new Response('No token provided', { status: 400 });
                 if (!message) return new Response('No message provided', { status: 400 });
 
-                const convo = getConversation(token);
-                if (!convo) return new Response('Conversation not found', { status: 404 });
+                let convo = getConversation(token);
+                if (!convo) {
+                    startConversation(token);
+                    convo = getConversation(token);
+                }
                 if (Date.now() - convo.lastMessageAt > 10 * 60 * 1000) return new Response('Conversation expired', { status: 410 });
 
                 appendMessage(token, message, 'user');
@@ -47,14 +49,17 @@ serve({
                 });
                 return new Response(async function*() {
                     let messsage = '';
+                    let usage = 0;
+                    const start = Date.now();
                     for await (const chunk of completion) {
                         const content = chunk.data.choices[0].delta.content as string;
+                        usage += chunk.data.usage?.totalTokens || 0;
                         if (content) {
                             messsage += content;
                             yield `${content}`;
                         }
                     }
-                    console.log(`[${token}] Completion finished`);
+                    console.log(`[${token}] Completion finished (${usage} tokens / ${Date.now() - start}ms)`);
                     appendMessage(token, messsage, 'assistant');
                 }, {
                     headers: {
