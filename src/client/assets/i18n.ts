@@ -2,6 +2,7 @@ const SUPPORTED_LANGUAGES = ['en', 'fr', 'ko'];
 const langSelector = document.querySelector('.language-selector') as HTMLDivElement;
 const langButtons = document.querySelectorAll('.language-selector button') as NodeListOf<HTMLButtonElement>;
 const examplePrompts = document.querySelectorAll('.example-prompt') as NodeListOf<HTMLDivElement>;
+const input = document.querySelector('.input-container textarea') as HTMLTextAreaElement;
 
 function updatePrompts(lang: string) {
 	examplePrompts.forEach((prompt) => {
@@ -9,6 +10,16 @@ function updatePrompts(lang: string) {
 		prompt.setAttribute('data-prompt', locale);
 	});
 }
+
+const PLACEHOLDER_LOCALES = {
+	fr: 'Poser une question...',
+	en: 'Ask a question...',
+	ko: '질문 입력하기...'
+};
+function updateInputPlaceholder(lang: string) {
+	input.setAttribute('placeholder', PLACEHOLDER_LOCALES[lang]);
+}
+
 
 // Detect language from storage or navigator
 let userLang = localStorage.getItem('paulleflon:language');
@@ -27,6 +38,7 @@ if (!userLang)
 	userLang = 'en';
 
 updatePrompts(userLang);
+updateInputPlaceholder(userLang);
 document.documentElement.setAttribute('lang', userLang);
 localStorage.setItem('paulleflon:language', userLang);
 Array.from(langButtons).find((button) => button.getAttribute('data-lang') === userLang)?.classList.add('selected');
@@ -46,6 +58,7 @@ langButtons.forEach((button) => {
 				else btn.classList.remove('selected');
 			});
 			updatePrompts(selectedLang);
+			updateInputPlaceholder(selectedLang);
 		}
 	});
 });

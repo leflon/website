@@ -1,6 +1,5 @@
 import { Mistral } from '@mistralai/mistralai';
 import { serve } from 'bun';
-import crypto from 'crypto';
 import dotenv from 'dotenv';
 import Homepage from './client/index.html';
 import { appendMessage, getConversation, startConversation } from './db';
