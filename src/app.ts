@@ -16,6 +16,24 @@ serve({
     development: process.env.NODE_ENV !== 'production',
     routes: {
         '/': Homepage,
+        '/static/:file': async (req) => {
+            const filename = req.params.file;
+            const filePath = `src/client/static/${filename}`
+            if (!(await Bun.file(filePath).exists())) {
+                return new Response('File not found', { status: 404 });
+            }
+            const file = Bun.file(filePath);
+            const type = file.type;
+
+            return new Response(await file.bytes(), {
+                headers: {
+                    'Content-Type': type,
+                    'Cache-Control': 'public, max-age=31536000',
+                }
+            });
+
+
+        },
         '/message': {
             POST: async (req) => {
                 console.log('Received message');

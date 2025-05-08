@@ -63,7 +63,10 @@ header {
         color: #ffffff;
         font: 500 2rem 'Cal Sans';
         text-decoration: none;
-
+        transition: color .3s ease;
+        &:hover {
+            color: #9d9fb1;
+        }
         @media (max-width: 400px) {
             font-size: 1.25rem;
         }
