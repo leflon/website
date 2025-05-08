@@ -7,7 +7,6 @@ import { appendMessage, getConversation, startConversation } from './db';
 
 dotenv.config();
 
-
 const mistral = new Mistral({
     apiKey: process.env.MISTRAL_API_KEY,
 });
@@ -18,10 +17,6 @@ serve({
     development: process.env.NODE_ENV !== 'production',
     routes: {
         '/': Homepage,
-        '/token': async (req) => {
-            const token = crypto.randomUUID();
-            return new Response(token);
-        },
         '/message': {
             POST: async (req) => {
                 console.log('Received message');

@@ -1,7 +1,7 @@
 declare const showdown: { Converter: any };
 const converter = new showdown.Converter({ openLinksInNewWindow: true });
 
-const CONVERSATION_TOKEN = await fetch('/token').then(res => res.text());
+const CONVERSATION_TOKEN = crypto.randomUUID();
 
 /* DOM Elements */
 const input = document.querySelector('.input-container textarea') as HTMLTextAreaElement;
