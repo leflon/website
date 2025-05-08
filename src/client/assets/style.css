@@ -27,6 +27,7 @@ body {
         color: #ffffff;
         font-size: 1.5rem;
         margin-bottom: 20px;
+
         @media (min-width: 425px) {
             font-size: 2.5rem;
         }
@@ -36,13 +37,16 @@ body {
         color: #ffffff;
         font-size: 1rem;
         margin: 0 0 10px 0;
+
         @media (min-width: 425px) {
             font-size: 1.5rem;
         }
     }
+
     & img {
         border-radius: 50%;
         width: 150px;
+
         @media (min-width: 800px) {
             width: 200px;
         }
@@ -87,6 +91,10 @@ body {
     flex-direction: column;
 }
 
+.active .chat-container {
+    padding-bottom: 130px;
+}
+
 .message {
     color: white;
     margin: 16px 0;
@@ -100,6 +108,24 @@ body {
         margin-left: auto;
         align-self: end;
     }
+
+    & a {
+        color: inherit;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
+    & p,
+    & h1,
+    & h2,
+    & h3,
+    & h4,
+    & h5,
+    & h6 {
+        margin: 5px 0;
+    }
 }
 
 .outer-input-container {
@@ -108,7 +134,9 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 5px;
+    backdrop-filter: blur(10px);
 }
+
 .input-container {
     position: relative;
     box-sizing: border-box;
@@ -160,7 +188,8 @@ body {
 .active .outer-input-container {
     width: 100%;
     position: fixed;
-    bottom: 5px;
+    bottom: 0;
+    padding-bottom: 5px;
 }
 
 .disclaimer {

@@ -1,4 +1,7 @@
-const token = await fetch('/token').then(res => res.text());
+declare const showdown: { Converter: any };
+const converter = new showdown.Converter({ openLinksInNewWindow: true });
+
+const CONVERSATION_TOKEN = await fetch('/token').then(res => res.text());
 
 /* DOM Elements */
 const input = document.querySelector('.input-container textarea') as HTMLTextAreaElement;
@@ -43,7 +46,7 @@ async function sendMessage() {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message, token }),
+        body: JSON.stringify({ message, token: CONVERSATION_TOKEN }),
     });
     if (!res.body) {
         assistantMessage.textContent = 'No response from server.';
@@ -60,6 +63,7 @@ async function sendMessage() {
         }
         done = streamDone;
     }
+    assistantMessage.innerHTML = converter.makeHtml(assistantMessage.textContent);
     input.disabled = false;
     isSendingDisabled = false;
     input.focus();
