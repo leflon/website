@@ -15,7 +15,6 @@ body {
     z-index: -1;
 }
 
-
 .app {
     box-sizing: border-box;
     width: 100%;
@@ -31,6 +30,18 @@ body {
         justify-content: start;
     }
 }
+
+html:lang(fr) span:lang(fr) { display: inline; }
+html:lang(fr) span:lang(en),
+html:lang(fr) span:lang(ko) { display: none; }
+
+html:lang(en) span:lang(en) { display: inline; }
+html:lang(en) span:lang(fr),
+html:lang(en) span:lang(ko) { display: none; }
+
+html:lang(ko) span:lang(ko) { display: inline; }
+html:lang(ko) span:lang(fr),
+html:lang(ko) span:lang(en) { display: none; }
 
 header {
     position: fixed;
@@ -74,6 +85,28 @@ header {
 
             &:hover {
                 background: #8185a350;
+            }
+        }
+    }
+    & .language-selector {
+        display: flex;
+        gap: 3px;
+        align-items: center;
+        border: 1px solid #38434c;
+        padding: 5px 10px;
+        border-radius: 5px;
+        background: #41505c4f;
+
+        & button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 3px 8px;
+            border-radius: 5px;
+            transition: background .1s ease;
+
+            &.selected, &:hover, &:focus {
+                background: #38434c;
             }
         }
     }
@@ -135,6 +168,10 @@ header {
     border-radius: 10em;
     background: none;
     cursor: pointer;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 80%;
     transition: background 0.1s ease;
 
     &:hover {
@@ -264,11 +301,46 @@ header {
 .disclaimer {
     color: #8185a3;
     font-size: 13px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     text-align: center;
 }
 
 @media (max-width: 800px) {
     .active .disclaimer {
         display: none;
+    }
+}
+
+
+@media (max-width: 520px) {
+    header {
+        gap: 5px;
+        justify-content: start;
+    }
+    header .links {
+        padding-right: 50px;
+        gap: 5px;
+        & a {
+            font-size: 0.8rem;
+            padding: 5px 10px;
+        }
+    }
+    .language-selector {
+        position: absolute;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 1.5rem;
+        top: 20px;
+        right: 10px;
+        overflow: hidden;
+        &:not(.open) :not(.selected) {
+            display: none;
+        }
+        &.open {
+            height: auto;
+        }
     }
 }

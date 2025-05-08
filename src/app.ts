@@ -15,7 +15,7 @@ const mistral = new Mistral({
 const PORT = process.env.PORT || 3000;
 serve({
     port: PORT,
-    development: true,
+    development: process.env.NODE_ENV !== 'production',
     routes: {
         '/': Homepage,
         '/token': async (req) => {
@@ -32,7 +32,7 @@ serve({
                 let convo = getConversation(token);
                 if (!convo) {
                     startConversation(token);
-                    convo = getConversation(token);
+                    convo = getConversation(token)!;
                 }
                 if (Date.now() - convo.lastMessageAt > 10 * 60 * 1000) return new Response('Conversation expired', { status: 410 });
 

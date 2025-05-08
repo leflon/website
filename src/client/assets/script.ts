@@ -11,9 +11,9 @@ const chatContainer = document.querySelector('.chat-container') as HTMLDivElemen
 const examplePrompts = document.querySelectorAll('.example-prompt') as NodeListOf<HTMLDivElement>;
 input.focus();
 
-examplePrompts.forEach(e => {
-    e.addEventListener('click', () => {
-        const prompt = e.textContent!;
+examplePrompts.forEach(elm => {
+    elm.addEventListener('click', () => {
+        const prompt = elm.dataset.prompt!;
         input.value = prompt;
         sendMessage();
     });

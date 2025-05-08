@@ -13,6 +13,7 @@
 	<link rel="stylesheet" href="assets/style.css">
 	<script src='https://unpkg.com/showdown/dist/showdown.min.js'></script>
 	<script src="assets/script.ts" defer></script>
+	<script src="assets/i18n.ts" defer></script>
 </head>
 
 <body>
@@ -23,17 +24,42 @@
 			<div class="links">
 				<a href='https://github.com/leflon' target='_blank' rel='noopener noreferrer'>GitHub</a>
 				<a href='https://www.linkedin.com/in/leflon' target='_blank' rel='noopener noreferrer'>LinkedIn</a>
+				<div class="language-selector">
+					<button data-lang='fr'>🇫🇷</button>
+					<button data-lang='en'>🇬🇧</button>
+					<button data-lang='ko'>🇰🇷</button>
+				</div>
 			</div>
 		</header>
 		<div class='landing'>
-			<img src='assets/img/paul@2x.webp'
+			<img src='assets/img/paul@2x.webp' fetchpriority='high'
 				alt='Red-haired man in his twenties wearing a black hoodie on a white background' width='200' />
-			<h1>Bonjour ! Je suis Paul Leflon.</h1>
-			<h2>Étudiant à l'école d'ingénieur Efrei Paris</h2>
+			<h1>
+				<span lang='fr'>Bonjour ! Je suis Paul Leflon.</span>
+				<span lang='en'>Hello! I&apos;m Paul Leflon.</span>
+				<span lang='ko'>안녕하세요! 저는 Paul Leflon입니다.</span>
+			</h1>
+			<h2>
+				<span lang='fr'>Étudiant à l'école d'ingénieur Efrei Paris</span>
+				<span lang='en'>Student at Efrei Paris Engineering School</span>
+				<span lang='ko'>Efrei Paris 공과대학 학생</span>
+			</h2>
 			<div class='landing-cta'>
-				<button class='example-prompt'>Présente-toi</button>
-				<button class='example-prompt'>Parle moi de tes projets</button>
-				<button class='example-prompt'>Ton parcours scolaire ?</button>
+				<button class='example-prompt'>
+					<span lang="fr">Présente-toi</span>
+					<span lang="en">Introduce yourself</span>
+					<span lang="ko">자기소개 해주세요</span>
+				</button>
+				<button class='example-prompt'>
+					<span lang="fr">Parle-moi de tes projets</span>
+					<span lang="en">Tell me about your projects</span>
+					<span lang="ko">프로젝트에 대해 이야기해 주세요</span>
+				</button>
+				<button class='example-prompt'>
+					<span lang="fr">Parle-moi de ton parcours scolaire</span>
+					<span lang="en">Tell me about your academic background</span>
+					<span lang="ko">학업 배경에 대해 이야기해 주세요</span>
+				</button>
 			</div>
 		</div>
 		<div class='chat-container'>
@@ -52,11 +78,16 @@
 				</button>
 			</div>
 			<div class='disclaimer'>
-				<div>L'IA peut parfois se tromper. Les réponses sont générées automatiquement et peuvent contenir des
-					erreurs ou
-					des approximations.</div>
-				<div>Les conversations sont enregistrées de façon entièrement anonyme. Aucune donnée personnelle n'est
-					collectée.</div>
+				<span lang="fr">L'IA peut parfois se tromper. Les réponses sont générées automatiquement et peuvent
+					contenir des erreurs ou des approximations.</span>
+				<span lang="en">The AI can sometimes be wrong. Answers are generated automatically and may contain
+					errors or approximations.</span>
+				<span lang="ko">AI는 때때로 잘못될 수 있습니다. 답변은 자동으로 생성되며 오류나 근사치를 포함할 수 있습니다.</span>
+				<span lang="fr">Les conversations sont enregistrées de façon entièrement anonyme. Aucune donnée
+					personnelle n'est collectée.</span>
+				<span lang="en">Conversations are recorded completely anonymously. No personal data is collected.
+				</span>
+				<span lang="ko">대화는 완전히 익명으로 저장됩니다. 개인 정보는 수집되지 않습니다.</span>
 			</div>
 		</div>
 	</div>
