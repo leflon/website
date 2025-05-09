@@ -8,15 +8,12 @@
   },
   "dependencies": {
     "@google/genai": "^0.13.0",
-    "dotenv": "^16.5.0",
-    "ejs": "^3.1.10",
-    "express": "^5.1.0"
+    "dotenv": "^16.5.0"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/bun": "^1.2.12",
-    "@types/express": "^5.0.1",
-    "@types/node": "^22.15.15"
+    "@types/node": "^22.15.17"
   }
 }
