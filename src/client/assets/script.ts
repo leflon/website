@@ -55,15 +55,17 @@ async function sendMessage() {
     const reader = res.body.getReader();
     const decoder = new TextDecoder();
     let done = false;
+	let reply = '';
     while (!done) {
         const { value, done: streamDone } = await reader.read();
         if (value) {
-            assistantMessage.textContent += decoder.decode(value, { stream: true });
+            reply += decoder.decode(value, { stream: true });
+            assistantMessage.innerHTML = converter.makeHtml(reply);
             document.scrollingElement!.scrollTop = document.scrollingElement!.scrollHeight;
         }
         done = streamDone;
     }
-    assistantMessage.innerHTML = converter.makeHtml(assistantMessage.textContent);
+    assistantMessage.innerHTML = converter.makeHtml(reply);
     document.scrollingElement!.scrollTop = document.scrollingElement!.scrollHeight;
     input.disabled = false;
     isSendingDisabled = false;
