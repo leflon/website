@@ -14,7 +14,7 @@ export function startConversation(token: string): void {
 
 const addMessageQuery = db.prepare('INSERT INTO Messages VALUES (?, ?, ?, ?, ?)');
 const updateConversationQuery = db.prepare('UPDATE Conversations SET lastMessageAt = ? WHERE id = ?');
-export function appendMessage(conversationId: string, content: string, role: 'user' | 'assistant'): void {
+export function appendMessage(conversationId: string, content: string, role: 'user' | 'model'): void {
 	const now = Date.now();
 	addMessageQuery.run(crypto.randomUUID(), conversationId, now, content, role);
 	updateConversationQuery.run(now, conversationId);

@@ -1,14 +1,10 @@
-import { Mistral } from '@mistralai/mistralai';
 import { serve } from 'bun';
 import dotenv from 'dotenv';
+import { getResponse } from './ai';
 import Homepage from './client/index.html';
 import { appendMessage, getConversation, startConversation } from './db';
 
 dotenv.config();
-
-const mistral = new Mistral({
-    apiKey: process.env.MISTRAL_API_KEY,
-});
 
 const PORT = process.env.PORT || 3000;
 serve({
@@ -48,31 +44,23 @@ serve({
                 }
                 if (Date.now() - convo.lastMessageAt > 10 * 60 * 1000) return new Response('Conversation expired', { status: 410 });
 
-                appendMessage(token, message, 'user');
-                const messages = convo.messages.map((msg) => ({
-                    role: msg.role,
-                    content: msg.content,
-                }));
                 console.log(`[${token}] Completion requested`);
-                const completion = await mistral.chat.stream({
-                    messages,
-                    stream: true,
-                    model: 'mistral-large-latest',
-                });
+                const completion = await getResponse(convo, message);
                 return new Response(async function*() {
                     let messsage = '';
-                    let usage = 0;
+                    let usage: number | undefined;
                     const start = Date.now();
                     for await (const chunk of completion) {
-                        const content = chunk.data.choices[0].delta.content as string;
-                        usage += chunk.data.usage?.totalTokens || 0;
+                        const content = chunk.text;
+                        usage ??= chunk.usageMetadata?.totalTokenCount || 0;
                         if (content) {
                             messsage += content;
                             yield `${content}`;
                         }
                     }
                     console.log(`[${token}] Completion finished (${usage} tokens / ${Date.now() - start}ms)`);
-                    appendMessage(token, messsage, 'assistant');
+                    appendMessage(token, message, 'user');
+                    appendMessage(token, messsage, 'model');
                 }, {
                     headers: {
                         'Content-Type': 'text/event-stream',

@@ -3,5 +3,5 @@ export class Message {
 	conversationId: string;
 	content: string;
 	createdAt: number;
-	role: 'user' | 'assistant' | 'system';
+	role: 'user' | 'model';
 }
