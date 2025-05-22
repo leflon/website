@@ -209,6 +209,14 @@ header {
         margin-left: auto;
         align-self: end;
     }
+    &.error {
+        background: #bb36362c;
+        width: fit-content;
+        padding: 10px 10px;
+        border-radius: 8px;
+        border: 1px solid #bb3636;
+        
+    }
 
     & a {
         color: inherit;
