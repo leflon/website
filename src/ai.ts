@@ -7,6 +7,31 @@ const ai = new GoogleGenAI({
 	apiKey: process.env.GEMINI_API_KEY,
 });
 
+// Avoids weird interruptions. Safety filters are set in system prompt.
+const SAFETY_SETTINGS = [
+  {
+	category: 'HARM_CATEGORY_HARASSMENT',
+	threshold: 'BLOCK_NONE'
+  },
+  {
+	category: 'HARM_CATEGORY_HATE_SPEECH',
+	threshold: 'BLOCK_NONE'
+  },
+  {
+	category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
+	threshold: 'BLOCK_NONE'
+  },
+  {
+	category: 'HARM_CATEGORY_DANGEROUS_CONTENT',
+	threshold: 'BLOCK_NONE'
+  },
+  {
+	category: 'HARM_CATEGORY_CIVIC_INTEGRITY',
+	threshold: 'BLOCK_NONE'
+  }
+];
+	
+
 // In-memory cache for active chat sessions
 const activeChats = new Map<string, Chat>();
 
@@ -23,7 +48,9 @@ export async function getResponse(conversation: Conversation, userMessage: strin
 			model: 'gemini-2.0-flash',
 			history,
 			config: {
-				systemInstruction: SYSTEM_PROMPT
+				temperature: 1.5,
+				systemInstruction: SYSTEM_PROMPT,
+				safetySettings: SAFETY_SETTINGS
 			}
 		});
 		activeChats.set(conversation.id, chat);

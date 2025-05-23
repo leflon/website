@@ -51,10 +51,12 @@ serve({
 					let usage: number | undefined;
 					const start = Date.now();
 					for await (const chunk of completion) {
+						console.log(JSON.stringify(chunk));
 						const content = chunk.text;
 						usage ??= chunk.usageMetadata?.totalTokenCount || 0;
 						if (content) {
 							messsage += content;
+							console.log(content);
 							yield `${content}`;
 						}
 					}

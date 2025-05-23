@@ -48,18 +48,18 @@ async function sendMessage() {
 		},
 		body: JSON.stringify({ message, token: CONVERSATION_TOKEN }),
 	});
+	if (res.status !== 200)
+	  assistantMessage.classList.add('error');
 	if (!res.body) {
 		assistantMessage.innerHTML = "<span lang='fr'>Le serveur n'a renvoyé aucune réponse.</span>" +
 			"<span lang='en'>No response from server.</span>" +
 			"<span lang='ko'>서버에서 응답이 없습니다.</span>";
-		assistantMessage.classList.add('error');
 		return;
 	}
 	if (res.status === 410) {
 		assistantMessage.innerHTML = "<span lang='fr'>Cette conversation a expiré. Veuillez en démarrer une nouvelle.</span>" +
 			"<span lang='en'>This conversation has expired. Please start a new one.</span>" +
 			"<span lang='ko'>이 대화는 만료되었습니다. 새로 시작하세요.</span>";
-		assistantMessage.classList.add('error');
 		return;
 	}
 	const reader = res.body.getReader();
