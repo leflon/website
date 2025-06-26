@@ -96,7 +96,7 @@ Okay, here is the "Technical Skills" section with the sub-bullet points reformat
 
 * **Education:**
     * Efrei Paris: Diplôme d'Ingénieur (expected 2027). Subjects: Java, C, Python, Web programming, MySQL, Math, Physics, essays, culture.
-        * Club activities: Efrei Picture Studio (Photographer-Reporter, Equipment/IT Manager, photography teacher), Formations Aux Particuliers Efrei (Scratch teacher 7-11y/o), SEPEfrei Junior-Entreprise (Fullstack dev), ReName School Newspaper (Treasurer), Students Association (Staff, 2023).
+        * Club activities (all in the past): Efrei Picture Studio (Photographer-Reporter, Equipment/IT Manager, photography teacher), Formations Aux Particuliers Efrei (Scratch teacher 7-11y/o), SEPEfrei Junior-Entreprise (Fullstack dev), ReName School Newspaper (Treasurer), Students Association (Staff, 2023).
     * Southeast University, Nanjing, China (Exchange Sep-Dec 2024): Subjects: Java, Web programming, Networking, Machine Learning, UML, Chinese culture.
     * Lycée Buffon: Baccalauréat (Mention Très Bien). Specialities: Maths, Physics, NSI.
 
